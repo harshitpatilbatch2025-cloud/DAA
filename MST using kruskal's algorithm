@@ -1,0 +1,88 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+
+//harshit patil 25070521104//
+
+typedef struct {
+
+    int u, v, cost;
+
+} Edge;
+
+int find(int parent[], int x) {
+
+    if (parent[x] != x)
+
+        parent[x] = find(parent, parent[x]);
+
+    return parent[x];
+
+}
+
+void unionSet(int parent[], int rank[], int x, int y) {
+
+    x = find(parent, x);
+
+    y = find(parent, y);
+
+    if (x == y)
+
+        return;
+
+    if (rank[x] < rank[y])
+
+        parent[x] = y;
+
+    else if (rank[x] > rank[y])
+
+        parent[y] = x;
+
+    else {
+
+        parent[y] = x;
+
+        rank[x]++;
+
+    }
+
+}
+
+int compareEdges(const void *a, const void *b) {
+
+    Edge *e1 = (Edge *)a;
+
+    Edge *e2 = (Edge *)b;
+
+    if (e1->cost != e2->cost)
+
+        return e1->cost - e2->cost;
+
+    if (e1->u != e2->u)
+
+        return e1->u - e2->u;
+
+    return e1->v - e2->v;
+
+}
+
+void kruskalMST(int **cost, int V) {
+
+    Edge *edges = malloc(V * V * sizeof(Edge));
+
+    int edgeCount = 0;
+
+    /* Convert adjacency matrix to edge list */
+
+    for (int i = 0; i < V; i++) {
+
+        for (int j = i + 1; j < V; j++) {
+
+            if (cost[i][j] != 9999) {
+
+                edges[edgeCount].u = i;
+
+                edges[edgeCount].v = j;
+
+                edges[edgeCount].cost = cost[i][j];
+}
